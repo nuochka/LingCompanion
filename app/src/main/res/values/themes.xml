@@ -2,8 +2,15 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.LingCompanion" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/primary_color</item>
     </style>
 
     <style name="Theme.LingCompanion" parent="Base.Theme.LingCompanion" />
+    <style name="ButtonWhite">
+        <item name="android:background">@drawable/bg_button</item>
+        <item name="android:fontFamily">@font/montserrat</item>
+        <item name="android:textColor">@color/primary_color</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

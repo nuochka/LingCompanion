@@ -28,46 +28,11 @@
         android:text="@string/started_sub_title"
         android:fontFamily="@font/montserrat"
         android:lineHeight="20sp"
-        android:layout_marginTop="60dp"
         android:textColor="@color/white"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_started_title"/>
-
-    <ImageView
-        android:id="@+id/img_illustration_started"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/illustration_started"
-        android:contentDescription="@string/illustration_img"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_login"
-        style="@style/ButtonWhite"
-        android:layout_width="314dp"
-        android:layout_height="46dp"
-        android:layout_marginBottom="15dp"
-        android:text="@string/btn_login"
-        app:layout_constraintBottom_toTopOf="@+id/btn_register"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_register"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="30dp"
-        style="@style/ButtonWhite"
-        android:text = "@string/btn_register"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
