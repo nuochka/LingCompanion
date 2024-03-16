@@ -46,28 +46,29 @@
         app:layout_constraintTop_toTopOf="parent"
         />
 
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_login"
         style="@style/ButtonWhite"
-        android:layout_width="314dp"
-        android:layout_height="46dp"
-        android:layout_marginBottom="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
         android:text="@string/btn_login"
         app:layout_constraintBottom_toTopOf="@+id/btn_register"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_register"
+        style="@style/ButtonWhite"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="30dp"
-        style="@style/ButtonWhite"
-        android:text = "@string/btn_register"
+        android:layout_marginBottom="96dp"
+        android:text="@string/btn_register"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

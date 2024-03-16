@@ -6,14 +6,6 @@
     <string name="btn_register">REGISTER</string>
     <string name="btn_login">LOGIN</string>
     <string name="login_title">Sign in</string>
-    <br>
-        <b>Login</b>
-        If you already heave an account.
-    </br>
-    <br>
-        <b>Register</b>
-        to get started!
-    </br>
     <string name="login_sub_title">
         <font color="#FF8E24AA"><b>Login</b></font>
         if you already have an account.
