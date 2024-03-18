@@ -6,12 +6,14 @@ import android.content.Intent
 import android.database.Observable
 import android.os.Bundle
 import android.util.Patterns
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.app.lingcompanion.databinding.ActivityRegisterBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.jakewharton.rxbinding2.widget.RxTextView
 import io.reactivex.Observable.combineLatest
 import io.reactivex.Observable.merge
@@ -21,10 +23,14 @@ import io.reactivex.Observable.merge
 class RegisterActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRegisterBinding
+    private lateinit var auth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        //Auth
+        auth = FirebaseAuth.getInstance()
 
         //Fullname validation
         val nameStream = RxTextView.textChanges(binding.etFullname)
@@ -104,7 +110,9 @@ class RegisterActivity : AppCompatActivity() {
 
         //Click
         binding.btnRegister.setOnClickListener{
-            startActivity(Intent(this, LoginActivity::class.java))
+            val email = binding.etEmail.text.toString().trim()
+            val password = binding.etPassword.text.toString().trim()
+            registerUser(email, password)
         }
 
         binding.tvHaveAccount.setOnClickListener{
@@ -134,5 +142,17 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun showPasswordConfirmAlert(isNotValid: Boolean){
         binding.etConfirmPassword.error = if(isNotValid) "Password is not the same" else null
+    }
+
+    private fun registerUser(email: String, password: String){
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this){
+                if(it.isSuccessful){
+                    startActivity(Intent(this, LoginActivity::class.java))
+                    Toast.makeText(this, "Register completed successfully", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, it.exception?.message, Toast.LENGTH_SHORT).show()
+                }
+            }
     }
 }

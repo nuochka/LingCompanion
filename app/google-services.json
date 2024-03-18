@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "772895585876",
+    "project_id": "lingcompanion",
+    "storage_bucket": "lingcompanion.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:772895585876:android:e5688580eb0c130b455fc1",
+        "android_client_info": {
+          "package_name": "com.app.lingcompanion"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkxIadmE5lvNaNTpDaL3zSCPLDkWiR9FU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
