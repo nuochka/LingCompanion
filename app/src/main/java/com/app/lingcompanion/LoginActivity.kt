@@ -78,6 +78,10 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
 
+        // Click listener for "Forgot password?" text
+        binding.tvForgotPw.setOnClickListener{
+            startActivity(Intent(this, ResetPasswordActivity::class.java))
+        }
         // Configure system bars padding
         enableEdgeToEdge()
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
