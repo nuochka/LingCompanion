@@ -32,7 +32,7 @@
 
     <string name="reset_pw_title">Reset your password</string>
     <string name="reset_pw_sub_title">
-        <font color = "#FF8E24AA">Reset password</font>
+        <font color="#FF8E24AA">Reset password</font>
         if you forgot your password.
     </string>
     <string name="btn_reset_pw">RESET PASSWORD</string>

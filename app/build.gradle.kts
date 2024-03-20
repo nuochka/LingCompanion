@@ -55,7 +55,7 @@ dependencies {
     implementation("io.reactivex.rxjava3:rxandroid:3.0.2")
     implementation("io.reactivex.rxjava3:rxjava:3.1.5")
     implementation("com.jakewharton.rxbinding2:rxbinding:2.0.0")
-
+    implementation("com.android.volley:volley:1.2.1")
     implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
     implementation("com.google.firebase:firebase-analytics")
 }
