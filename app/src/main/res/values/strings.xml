@@ -40,4 +40,6 @@
         Back to
         <font color="#FF8E24AA"><b>Login</b></font>
     </string>
+    <string name="title_ling_companion">Your Ling Companion</string>
+    <string name="online">Online</string>
 </resources>
