@@ -2,6 +2,7 @@ package com.app.lingcompanion
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -74,7 +75,7 @@ class HomeActivity : AppCompatActivity() {
         jsonObject.put("model", "gpt-3.5-turbo-instruct")
         jsonObject.put("prompt", query)
         jsonObject.put("temperature", 0)
-        jsonObject.put("max_tokens", 1)
+        jsonObject.put("max_tokens", 50)
         jsonObject.put("top_p", 1)
         jsonObject.put("frequency_penalty", 0.0)
         jsonObject.put("presence_penalty", 0.0)
@@ -86,18 +87,21 @@ class HomeActivity : AppCompatActivity() {
             jsonObject,
             Response.Listener { response ->
                 try {
+                    Log.d("Response", "Received response: $response")
                     val responseMsg: String =
                         response.getJSONArray("choices").getJSONObject(0).getString("text")
                     messageList.add(MessageRVModal(responseMsg, "bot"))
                     messageRVAdapter.notifyDataSetChanged()
                 } catch (e: JSONException) {
+                    Log.e("Response", "Error parsing JSON: ${e.message}")
                     e.printStackTrace()
                 }
             },
-            Response.ErrorListener { _ ->
+            Response.ErrorListener { error ->
+                Log.e("Response", "Volley error: ${error.message}")
                 Toast.makeText(
                     applicationContext,
-                    "Fail to get a response..",
+                    "Failed to get a response",
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -126,7 +130,6 @@ class HomeActivity : AppCompatActivity() {
                 }
             }
         }
-
         queue.add(postRequest)
     }
     private fun enableEdgeToEdge() {

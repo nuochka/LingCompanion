@@ -34,15 +34,15 @@ class MessageRVAdapter(private val messageList: ArrayList<MessageRVModal>):
         return messageList.size
     }
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val sender = messageList.get(position).sender
+        val sender = messageList[position].sender
         when(sender){
-            "user" -> (holder as UserMessageViewHolder).userMsgTV.setText(messageList.get(position).message)
-            "bot" -> (holder as BotMessageViewHolder).botMsgTV.setText(messageList.get(position).message)
+            "user" -> (holder as UserMessageViewHolder).userMsgTV.text = messageList[position].message
+            "bot" -> (holder as BotMessageViewHolder).botMsgTV.text = messageList[position].message
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when(messageList.get(position).sender){
+        return when(messageList[position].sender){
             "user" -> 0
             "bot" -> 1
             else -> 1
