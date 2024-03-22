@@ -5,42 +5,19 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SettingsActivity">
+    tools:context=".HomeActivity"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:gravity="center">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/idRVMessages"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/idTILQuery"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/idTILQuery"
-        style="@style/TextInputLayoutChat"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_logout"
+        style="@style/ButtonPurple"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="5dp"
-        android:hint="Enter your message"
-        android:padding="5dp"
-        android:textColorHint="@color/grey"
-        app:hintTextColor="@color/grey"
-        app:endIconMode="custom"
-        app:endIconDrawable="@drawable/ic_send"
-        app:endIconContentDescription="Send"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/idEdtQuery"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:imeOptions="actionSend"
-            android:importantForAutofill="no"
-            android:inputType="text"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
-            android:textSize="14sp" />
-
-    </com.google.android.material.textfield.TextInputLayout>
+        android:layout_margin="15dp"
+        android:text="@string/btn_logout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints" />
 </androidx.constraintlayout.widget.ConstraintLayout>
