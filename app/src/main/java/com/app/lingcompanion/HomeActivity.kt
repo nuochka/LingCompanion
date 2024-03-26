@@ -27,10 +27,13 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
     private lateinit var auth: FirebaseAuth
 
+    // Views
     private lateinit var queryEdt: TextInputEditText
     private lateinit var messageRV: RecyclerView
     private lateinit var messageRVAdapter: MessageRVAdapter
     private lateinit var messageList: ArrayList<MessageRVModal>
+
+    // OpenAI API configuration
     private var url = "https://api.openai.com/v1/completions"
     private val apiKey = "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"
     private val organizationId = "org-8b4c3vvL9PhyY6Yzs9KbbwiP"
@@ -41,6 +44,7 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Initialize views
         queryEdt = binding.idEdtQuery
         messageRV = binding.idRVMessages
         messageList = ArrayList()
@@ -48,6 +52,7 @@ class HomeActivity : AppCompatActivity() {
         messageRV.layoutManager = LinearLayoutManager(this)
         messageRV.adapter = messageRVAdapter
 
+        // Set listener for sending queries
         queryEdt.setOnEditorActionListener { textView, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEND) {
                 val query = textView.text.toString()
@@ -64,10 +69,14 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
+        // Initialize Firebase authentication
         auth = FirebaseAuth.getInstance()
+
+        // Enable edge-to-edge display
         enableEdgeToEdge()
     }
 
+    // Function to handle API response
     private fun getResponse(query: String) {
         queryEdt.text?.clear()
         val queue: RequestQueue = Volley.newRequestQueue(applicationContext)
@@ -132,6 +141,8 @@ class HomeActivity : AppCompatActivity() {
         }
         queue.add(postRequest)
     }
+
+    // Function to enable edge-to-edge display
     private fun enableEdgeToEdge() {
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
