@@ -6,6 +6,7 @@
     </style>
 
     <style name="Theme.LingCompanion" parent="Base.Theme.LingCompanion" />
+
     <style name="ButtonWhite">
         <item name="android:background">@drawable/bg_button</item>
         <item name="android:fontFamily">@font/montserrat</item>
@@ -58,18 +59,27 @@
         <item name="android:background">@drawable/bg_text_field</item>
         <item name="android:fontFamily">@font/montserrat</item>
     </style>
+
     <style name="titles">
         <item name="android:fontFamily">@font/montserrat</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">18sp</item>
     </style>
-    
+
     <style name="TextInputLayoutChat" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
         <item name="boxStrokeColor">@color/grey_light</item>
         <item name="boxStrokeWidth">1dp</item>
         <item name="android:radius">12dp</item>
     </style>
 
+    <style name="Theme.LingCompanion.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.LingCompanion.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.LingCompanion.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 
 </resources>

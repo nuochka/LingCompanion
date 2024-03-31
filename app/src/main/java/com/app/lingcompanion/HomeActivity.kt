@@ -1,199 +1,58 @@
 package com.app.lingcompanion
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
-import android.view.MenuItem
-import android.view.inputmethod.EditorInfo
-import android.widget.Toast
-import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import androidx.core.view.GravityCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.android.volley.RequestQueue
-import com.android.volley.Response
-import com.android.volley.RetryPolicy
-import com.android.volley.VolleyError
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
-import com.app.lingcompanion.databinding.ActivityHomeBinding
+import android.view.Menu
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
-import com.google.android.material.textfield.TextInputEditText
-import com.google.firebase.auth.FirebaseAuth
-import org.json.JSONException
-import org.json.JSONObject
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.appcompat.app.AppCompatActivity
+import com.app.lingcompanion.databinding.ActivityHomeBinding
 
-class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class HomeActivity : AppCompatActivity() {
 
+    private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityHomeBinding
-    private lateinit var auth: FirebaseAuth
 
-    // Views
-    private lateinit var queryEdt: TextInputEditText
-    private lateinit var messageRV: RecyclerView
-    private lateinit var messageRVAdapter: MessageRVAdapter
-    private lateinit var messageList: ArrayList<MessageRVModal>
-
-    // OpenAI API configuration
-    private var url = "https://api.openai.com/v1/completions"
-    private val apiKey = "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"
-    private val organizationId = "org-8b4c3vvL9PhyY6Yzs9KbbwiP"
-
-    private lateinit var drawerLayout: DrawerLayout
-
-    @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Navigation drawer
-        drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.appBarHome.toolbar)
 
-        val navigationView = findViewById<NavigationView>(R.id.nav_view)
-        navigationView.setNavigationItemSelectedListener(this)
-
-        val toggle = ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_nav, R.string.close_nav)
-        drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
-
-        // Initialize views
-        queryEdt = binding.idEdtQuery
-        messageRV = binding.idRVMessages
-        messageList = ArrayList()
-        messageRVAdapter = MessageRVAdapter(messageList)
-        messageRV.layoutManager = LinearLayoutManager(this)
-        messageRV.adapter = messageRVAdapter
-
-        // Set listener for sending queries
-        queryEdt.setOnEditorActionListener { textView, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_SEND) {
-                val query = textView.text.toString()
-                if (query.isNotEmpty()) {
-                    messageList.add(MessageRVModal(query, "user"))
-                    messageRVAdapter.notifyDataSetChanged()
-                    getResponse(query)
-                } else {
-                    Toast.makeText(this, "Please enter your message", Toast.LENGTH_SHORT).show()
-                }
-                true
-            } else {
-                false
-            }
+        binding.appBarHome.fab.setOnClickListener { view ->
+            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null)
+                .setAnchorView(R.id.fab).show()
         }
-
-        // Initialize Firebase authentication
-        auth = FirebaseAuth.getInstance()
-
-        // Enable edge-to-edge display
-        enableEdgeToEdge()
+        val drawerLayout: DrawerLayout = binding.drawerLayout
+        val navView: NavigationView = binding.navView
+        val navController = findNavController(R.id.nav_host_fragment_content_home)
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow
+            ), drawerLayout
+        )
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        navView.setupWithNavController(navController)
     }
 
-    // Function to handle API response
-    private fun getResponse(query: String) {
-        queryEdt.text?.clear()
-        val queue: RequestQueue = Volley.newRequestQueue(applicationContext)
-        val jsonObject = JSONObject()
-        jsonObject.put("model", "gpt-3.5-turbo-instruct")
-        jsonObject.put("prompt", query)
-        jsonObject.put("temperature", 0)
-        jsonObject.put("max_tokens", 50)
-        jsonObject.put("top_p", 1)
-        jsonObject.put("frequency_penalty", 0.0)
-        jsonObject.put("presence_penalty", 0.0)
-
-        val postRequest = @SuppressLint("NotifyDataSetChanged")
-        object : JsonObjectRequest(
-            Method.POST,
-            url,
-            jsonObject,
-            Response.Listener { response ->
-                try {
-                    Log.d("Response", "Received response: $response")
-                    val responseMsg: String =
-                        response.getJSONArray("choices").getJSONObject(0).getString("text")
-                    messageList.add(MessageRVModal(responseMsg, "bot"))
-                    messageRVAdapter.notifyDataSetChanged()
-                } catch (e: JSONException) {
-                    Log.e("Response", "Error parsing JSON: ${e.message}")
-                    e.printStackTrace()
-                }
-            },
-            Response.ErrorListener { error ->
-                Log.e("Response", "Volley error: ${error.message}")
-                Toast.makeText(
-                    applicationContext,
-                    "Failed to get a response",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        ) {
-            override fun getHeaders(): MutableMap<String, String> {
-                val params: MutableMap<String, String> = HashMap()
-                params["Content-Type"] = "application/json"
-                params["Authorization"] = "Bearer $apiKey"
-                params["OpenAI-Organization"] = organizationId
-                return params
-            }
-
-            override fun getRetryPolicy(): RetryPolicy {
-                return object : RetryPolicy {
-                    override fun getCurrentTimeout(): Int {
-                        return 5000
-                    }
-
-                    override fun getCurrentRetryCount(): Int {
-                        return 5000
-                    }
-
-                    override fun retry(error: VolleyError) {
-                        // You can implement retry logic here if needed
-                    }
-                }
-            }
-        }
-        queue.add(postRequest)
-    }
-
-    // Function to enable edge-to-edge display
-    private fun enableEdgeToEdge() {
-        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
-    }
-
-
-    //Links for navigation menu
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.nav_home -> supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, HomeFragment()).commit()
-//            R.id.nav_settings -> supportFragmentManager.beginTransaction()
-//                .replace(R.id.fragment_container, SettingsFragment()).commit()
-//            R.id.nav_share -> supportFragmentManager.beginTransaction()
-//                .replace(R.id.fragment_container, ShareFragment()).commit()
-//            R.id.nav_about -> supportFragmentManager.beginTransaction()
-//                .replace(R.id.fragment_container, AboutFragment()).commit()
-            R.id.nav_logout -> Toast.makeText(this, "Logout!", Toast.LENGTH_SHORT).show()
-        }
-        drawerLayout.closeDrawer(GravityCompat.START)
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.home, menu)
         return true
     }
-    override fun onBackPressed() {
-        super.onBackPressed()
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            onBackPressedDispatcher.onBackPressed()
-        }
+
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.nav_host_fragment_content_home)
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 }
