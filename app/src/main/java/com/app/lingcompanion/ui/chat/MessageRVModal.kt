@@ -1,4 +1,4 @@
-package com.app.lingcompanion
+package com.app.lingcompanion.ui.chat
 
 data class MessageRVModal(
     var message: String,

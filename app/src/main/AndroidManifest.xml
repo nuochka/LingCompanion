@@ -21,16 +21,8 @@
             android:label="@string/title_activity_home"
             android:theme="@style/Theme.LingCompanion.NoActionBar" />
         <activity
-            android:name=".SettingsActivity"
-            android:exported="false" />
-        <activity
             android:name=".ResetPasswordActivity"
             android:exported="false" />
-        <activity
-            android:name=".ChatActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".RegisterActivity"
             android:exported="false"

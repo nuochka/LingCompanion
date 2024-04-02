@@ -1,10 +1,11 @@
-package com.app.lingcompanion
+package com.app.lingcompanion.ui.chat
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.app.lingcompanion.R
 
 // Adapter for RecyclerView to display messages
 class MessageRVAdapter(private val messageList: ArrayList<MessageRVModal>):
