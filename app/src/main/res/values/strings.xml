@@ -28,7 +28,7 @@
     <string name="register_username">Your username</string>
     <string name="register_confirm_password">Confirm your password</string>
     <string name="register_have_account">I already have an account<font color="#FF8E24AA"><b> Login</b></font></string>
-    <string name="btn_logout">LOGOUT</string>
+    <string name="btn_logout">YES</string>
 
     <string name="reset_pw_title">Reset your password</string>
     <string name="reset_pw_sub_title">
@@ -61,5 +61,7 @@
     <string name="nav_chat">Chat</string>
     <string name="nav_settings">Settings</string>
     <string name="nav_logout">Logout</string>
+    <string name="title_logout">Sign out from your account</string>
+    <string name="subtitle_logout">Are you sure that you want to log out?</string>
 
 </resources>
