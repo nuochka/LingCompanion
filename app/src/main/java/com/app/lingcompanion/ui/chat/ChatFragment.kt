@@ -1,16 +1,28 @@
 package com.app.lingcompanion.ui.chat
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Rect
+import android.os.Build
 import android.os.Bundle
+import android.speech.RecognitionListener
+import android.speech.RecognizerIntent
+import android.speech.SpeechRecognizer
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
+import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -22,11 +34,13 @@ import com.android.volley.RetryPolicy
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.app.lingcompanion.R
 import com.app.lingcompanion.databinding.FragmentChatBinding
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import org.json.JSONException
 import org.json.JSONObject
+import java.util.Locale
 
 class ChatFragment : Fragment() {
 
@@ -44,8 +58,12 @@ class ChatFragment : Fragment() {
     private val apiKey = "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"
     private val organizationId = "org-8b4c3vvL9PhyY6Yzs9KbbwiP"
 
+    //Speech recognizer
+    private var speechRecognizer: SpeechRecognizer? = null
+    private var editText: EditText? = null
+    private var microButton: ImageView? = null
 
-    @SuppressLint("NotifyDataSetChanged")
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -53,6 +71,17 @@ class ChatFragment : Fragment() {
     ): View {
         binding = FragmentChatBinding.inflate(inflater, container, false)
         val view = binding.root
+
+        //Speech recognizer
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.RECORD_AUDIO
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestPermissions(arrayOf(Manifest.permission.RECORD_AUDIO), REQUEST_RECORD_AUDIO_PERMISSION)
+        } else {
+            setupSpeechRecognizer()
+        }
 
         // Initialize views
         queryEdt = binding.idEdtQuery
@@ -88,6 +117,67 @@ class ChatFragment : Fragment() {
         return view
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        speechRecognizer?.destroy()
+    }
+
+    private fun checkPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(Manifest.permission.RECORD_AUDIO),
+                REQUEST_RECORD_AUDIO_PERMISSION
+            )
+        }
+    }
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_RECORD_AUDIO_PERMISSION && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            setupSpeechRecognizer()
+        } else {
+            Toast.makeText(requireContext(), "Permission denied", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setupSpeechRecognizer() {
+        editText = binding.idEdtQuery
+        microButton = binding.microButton
+        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(requireContext())
+        val speechRecognizerIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+        speechRecognizer?.setRecognitionListener(object : RecognitionListener {
+            override fun onReadyForSpeech(params: Bundle?) {}
+            override fun onBeginningOfSpeech() {
+                editText?.setText("")
+                editText?.setHint("Listening...")
+            }
+            override fun onRmsChanged(rmsdB: Float) {}
+            override fun onBufferReceived(buffer: ByteArray?) {}
+            override fun onEndOfSpeech() {}
+            override fun onError(error: Int) {}
+            override fun onResults(bundle: Bundle?) {
+                microButton?.setImageResource(R.drawable.ic_mic_off)
+                val data = bundle?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
+                editText?.setText(data?.get(0))
+            }
+            override fun onPartialResults(partialResults: Bundle?) {}
+            override fun onEvent(eventType: Int, params: Bundle?) {}
+        })
+        microButton?.setOnTouchListener { _, motionEvent ->
+            if (motionEvent.action == MotionEvent.ACTION_UP) {
+                speechRecognizer?.stopListening()
+            }
+            if (motionEvent.action == MotionEvent.ACTION_DOWN) {
+                microButton?.setImageResource(R.drawable.ic_mic_on)
+                speechRecognizer?.startListening(speechRecognizerIntent)
+            }
+            false
+        }
+    }
+
     // Function to handle API response
     private fun getResponse(query: String) {
         queryEdt.text?.clear()
@@ -101,8 +191,7 @@ class ChatFragment : Fragment() {
         jsonObject.put("frequency_penalty", 0.0)
         jsonObject.put("presence_penalty", 0.0)
 
-        val postRequest = @SuppressLint("NotifyDataSetChanged")
-        object : JsonObjectRequest(
+        val postRequest = object : JsonObjectRequest(
             Method.POST,
             url,
             jsonObject,
@@ -161,5 +250,9 @@ class ChatFragment : Fragment() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+    }
+
+    companion object {
+        private const val REQUEST_RECORD_AUDIO_PERMISSION = 200
     }
 }

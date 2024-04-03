@@ -40,29 +40,41 @@
             style="@style/TextInputLayoutChat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter your message"
+            android:hint="@string/tint_text_chat"
             android:padding="16dp"
-            app:endIconMode="custom"
-            app:endIconDrawable="@drawable/ic_send"
-            app:endIconContentDescription="Send"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:background="@color/white">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/idEdtQuery"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:imeOptions="actionSend"
-                android:importantForAutofill="no"
-                android:inputType="text"
-                android:textColor="@color/black"
-                android:textColorHint="@color/black"
-                android:textSize="14sp"
-                android:background="@color/chatColor"
-                />
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/idEdtQuery"
+                    android:layout_width="345dp"
+                    android:layout_height="38dp"
+                    android:background="@color/chatColor"
+                    android:ems="10"
+                    android:hint="@string/tint_text_chat"
+                    android:imeOptions="actionSend"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/grey"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/micro_button"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:contentDescription="Microphone"
+                    android:src="@drawable/ic_mic_off"
+                    android:layout_toEndOf="@id/idEdtQuery"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="8dp"/>
+
+            </RelativeLayout>
         </com.google.android.material.textfield.TextInputLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.drawerlayout.widget.DrawerLayout>
