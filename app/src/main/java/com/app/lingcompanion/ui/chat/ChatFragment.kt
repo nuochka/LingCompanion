@@ -200,7 +200,9 @@ class ChatFragment : Fragment() {
                     Log.d("Response", "Received response: $response")
                     val responseMsg: String =
                         response.getJSONArray("choices").getJSONObject(0).getString("text")
-                    messageList.add(MessageRVModal(responseMsg, "bot"))
+                    // Remove new lines from the response message
+                    val cleanedResponseMsg = removeNewLines(responseMsg)
+                    messageList.add(MessageRVModal(cleanedResponseMsg, "bot"))
                     messageRVAdapter.notifyDataSetChanged()
                 } catch (e: JSONException) {
                     Log.e("Response", "Error parsing JSON: ${e.message}")
@@ -250,6 +252,10 @@ class ChatFragment : Fragment() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+    }
+
+    fun removeNewLines(input: String): String {
+        return input.replace("\n", "")
     }
 
     companion object {

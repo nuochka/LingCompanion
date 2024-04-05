@@ -9,8 +9,7 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start"
     tools:context=".ui.chat.ChatFragment"
-    android:background="@drawable/chat_background">
-    >
+    android:background="@color/backgroundColor">
 
     <LinearLayout
         android:layout_width="match_parent"
