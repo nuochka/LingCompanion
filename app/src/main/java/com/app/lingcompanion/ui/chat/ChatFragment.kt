@@ -4,7 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
 import android.speech.RecognitionListener
@@ -15,12 +14,10 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -28,6 +25,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.RetryPolicy
@@ -43,26 +41,30 @@ import org.json.JSONObject
 import java.util.Locale
 
 class ChatFragment : Fragment() {
-
+    //Firebase auth
     private lateinit var binding: FragmentChatBinding
     private lateinit var auth: FirebaseAuth
 
-    // Views
+    //Chat
     private lateinit var queryEdt: TextInputEditText
     private lateinit var messageRV: RecyclerView
     private lateinit var messageRVAdapter: MessageRVAdapter
     private lateinit var messageList: ArrayList<MessageRVModal>
 
-    // OpenAI API configuration
+
+    //OpenAI API
     private var url = "https://api.openai.com/v1/completions"
     private val apiKey = "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"
     private val organizationId = "org-8b4c3vvL9PhyY6Yzs9KbbwiP"
+
 
     //Speech recognizer
     private var speechRecognizer: SpeechRecognizer? = null
     private var editText: EditText? = null
     private var microButton: ImageView? = null
 
+    private var isWaitingForUserResponse = false
+    
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -72,7 +74,6 @@ class ChatFragment : Fragment() {
         binding = FragmentChatBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        //Speech recognizer
         if (ContextCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.RECORD_AUDIO
@@ -83,7 +84,6 @@ class ChatFragment : Fragment() {
             setupSpeechRecognizer()
         }
 
-        // Initialize views
         queryEdt = binding.idEdtQuery
         messageRV = binding.idRVMessages
         messageList = ArrayList()
@@ -91,14 +91,15 @@ class ChatFragment : Fragment() {
         messageRV.layoutManager = LinearLayoutManager(requireContext())
         messageRV.adapter = messageRVAdapter
 
-        // Set listener for sending queries
         queryEdt.setOnEditorActionListener { textView, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEND) {
                 val query = textView.text.toString()
                 if (query.isNotEmpty()) {
                     messageList.add(MessageRVModal(query, "user"))
                     messageRVAdapter.notifyDataSetChanged()
-                    getResponse(query)
+                    if (!isWaitingForUserResponse) {
+                        getResponse(query)
+                    }
                 } else {
                     Toast.makeText(requireContext(), "Please enter your message", Toast.LENGTH_SHORT).show()
                 }
@@ -108,12 +109,10 @@ class ChatFragment : Fragment() {
             }
         }
 
-        // Initialize Firebase authentication
         auth = FirebaseAuth.getInstance()
 
-        // Enable edge-to-edge display
         enableEdgeToEdge()
-
+        sendInitialMessage()
         return view
     }
 
@@ -122,6 +121,8 @@ class ChatFragment : Fragment() {
         speechRecognizer?.destroy()
     }
 
+
+    //Permission
     private fun checkPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             ActivityCompat.requestPermissions(
@@ -131,6 +132,7 @@ class ChatFragment : Fragment() {
             )
         }
     }
+
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_RECORD_AUDIO_PERMISSION && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -140,6 +142,8 @@ class ChatFragment : Fragment() {
         }
     }
 
+
+    //Speech recognizer
     @SuppressLint("ClickableViewAccessibility")
     private fun setupSpeechRecognizer() {
         editText = binding.idEdtQuery
@@ -178,9 +182,14 @@ class ChatFragment : Fragment() {
         }
     }
 
-    // Function to handle API response
+
+    //Initialization OpenAI API for requests and responses
     private fun getResponse(query: String) {
-        queryEdt.text?.clear()
+        messageList.add(MessageRVModal(query, "user"))
+        messageRVAdapter.notifyDataSetChanged()
+
+        isWaitingForUserResponse = true
+
         val queue: RequestQueue = Volley.newRequestQueue(requireContext())
         val jsonObject = JSONObject()
         jsonObject.put("model", "gpt-3.5-turbo-instruct")
@@ -192,15 +201,13 @@ class ChatFragment : Fragment() {
         jsonObject.put("presence_penalty", 0.0)
 
         val postRequest = object : JsonObjectRequest(
-            Method.POST,
+            Request.Method.POST,
             url,
             jsonObject,
             Response.Listener { response ->
                 try {
-                    Log.d("Response", "Received response: $response")
                     val responseMsg: String =
                         response.getJSONArray("choices").getJSONObject(0).getString("text")
-                    // Remove new lines from the response message
                     val cleanedResponseMsg = removeNewLines(responseMsg)
                     messageList.add(MessageRVModal(cleanedResponseMsg, "bot"))
                     messageRVAdapter.notifyDataSetChanged()
@@ -208,6 +215,8 @@ class ChatFragment : Fragment() {
                     Log.e("Response", "Error parsing JSON: ${e.message}")
                     e.printStackTrace()
                 }
+                isWaitingForUserResponse = false
+
             },
             Response.ErrorListener { error ->
                 Log.e("Response", "Volley error: ${error.message}")
@@ -216,6 +225,7 @@ class ChatFragment : Fragment() {
                     "Failed to get a response",
                     Toast.LENGTH_SHORT
                 ).show()
+                isWaitingForUserResponse = false
             }
         ) {
             override fun getHeaders(): MutableMap<String, String> {
@@ -236,16 +246,14 @@ class ChatFragment : Fragment() {
                         return 5000
                     }
 
-                    override fun retry(error: VolleyError) {
-                        // You can implement retry logic here if needed
-                    }
+                    override fun retry(error: VolleyError) {}
                 }
             }
         }
         queue.add(postRequest)
     }
 
-    // Function to enable edge-to-edge display
+
     private fun enableEdgeToEdge() {
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -254,7 +262,53 @@ class ChatFragment : Fragment() {
         }
     }
 
-    fun removeNewLines(input: String): String {
+
+    //Initial message with random topic for discussion
+    private fun sendInitialMessage() {
+        val conversationTopics = arrayOf(
+            "How's your day going?",
+            "Do you have any exciting plans for the weekend?",
+            "What's your favorite thing to do in your free time?",
+            "Have you seen any good movies or TV shows lately?",
+            "Do you enjoy cooking? What's your signature dish?",
+            "How do you usually unwind after a long day?",
+            "Are you a fan of any particular sports or hobbies?",
+            "Do you have any pets? Tell me about them!",
+            "What's the most interesting place you've ever visited?",
+            "Are you a morning person or a night owl?",
+            "What's your favorite season of the year and why?",
+            "Do you like to read? Any favorite books or genres?",
+            "Are you into any form of art or creative activities?",
+            "What's the best piece of advice you've ever received?",
+            "If you could travel anywhere in the world right now, where would you go?",
+            "Are there any foods you absolutely can't stand?",
+            "What's the last song you listened to that you couldn't get out of your head?",
+            "Do you believe in superstitions or lucky charms?",
+            "What's your go-to comfort food when you're feeling down?",
+            "Are there any childhood memories that always make you smile?",
+            "Do you prefer spending time outdoors or indoors?",
+            "What's the funniest joke you've heard recently?",
+            "If you could have any superpower, what would it be and why?",
+            "What's the most adventurous thing you've ever done?",
+            "Are there any languages you'd love to learn?",
+            "Do you enjoy watching sunsets or sunrises?",
+            "What's your favorite way to relax and de-stress?",
+            "If you could meet any historical figure, who would it be and why?",
+            "What's the best part about where you live?",
+            "Are there any talents or skills you wish you had?",
+            "What's the most memorable concert or live performance you've attended?"
+        )
+        val initialMessage = "Hello! I'm your ling companion and I want to help you improve your speaking skills!\n"
+        val randomTopic = conversationTopics.random()
+        val completeMessage = "$initialMessage\n\nLet's talk about this topic: $randomTopic"
+
+        messageList.add(MessageRVModal(completeMessage, "bot"))
+        messageRVAdapter.notifyDataSetChanged()
+    }
+
+
+    //Function for removing enters in bot messages
+    private fun removeNewLines(input: String): String {
         return input.replace("\n", "")
     }
 
