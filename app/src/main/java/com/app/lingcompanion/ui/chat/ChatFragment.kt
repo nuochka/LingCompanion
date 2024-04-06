@@ -34,6 +34,7 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.app.lingcompanion.R
 import com.app.lingcompanion.databinding.FragmentChatBinding
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import org.json.JSONException
@@ -64,7 +65,7 @@ class ChatFragment : Fragment() {
     private var microButton: ImageView? = null
 
     private var isWaitingForUserResponse = false
-    
+
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -95,11 +96,11 @@ class ChatFragment : Fragment() {
             if (actionId == EditorInfo.IME_ACTION_SEND) {
                 val query = textView.text.toString()
                 if (query.isNotEmpty()) {
-                    messageList.add(MessageRVModal(query, "user"))
                     messageRVAdapter.notifyDataSetChanged()
                     if (!isWaitingForUserResponse) {
                         getResponse(query)
                     }
+                    queryEdt.setText("")
                 } else {
                     Toast.makeText(requireContext(), "Please enter your message", Toast.LENGTH_SHORT).show()
                 }
@@ -120,7 +121,6 @@ class ChatFragment : Fragment() {
         super.onDestroy()
         speechRecognizer?.destroy()
     }
-
 
     //Permission
     private fun checkPermissions() {
@@ -195,7 +195,7 @@ class ChatFragment : Fragment() {
         jsonObject.put("model", "gpt-3.5-turbo-instruct")
         jsonObject.put("prompt", query)
         jsonObject.put("temperature", 0)
-        jsonObject.put("max_tokens", 50)
+        jsonObject.put("max_tokens", 150)
         jsonObject.put("top_p", 1)
         jsonObject.put("frequency_penalty", 0.0)
         jsonObject.put("presence_penalty", 0.0)
