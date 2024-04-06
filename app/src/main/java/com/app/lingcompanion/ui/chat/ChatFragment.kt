@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
+import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -39,7 +40,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import org.json.JSONException
 import org.json.JSONObject
-import java.util.Locale
+import java.util.*
 
 class ChatFragment : Fragment() {
     //Firebase auth
@@ -52,12 +53,10 @@ class ChatFragment : Fragment() {
     private lateinit var messageRVAdapter: MessageRVAdapter
     private lateinit var messageList: ArrayList<MessageRVModal>
 
-
     //OpenAI API
     private var url = "https://api.openai.com/v1/completions"
     private val apiKey = "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"
     private val organizationId = "org-8b4c3vvL9PhyY6Yzs9KbbwiP"
-
 
     //Speech recognizer
     private var speechRecognizer: SpeechRecognizer? = null
@@ -65,6 +64,9 @@ class ChatFragment : Fragment() {
     private var microButton: ImageView? = null
 
     private var isWaitingForUserResponse = false
+
+    // Text-to-Speech
+    private lateinit var tts: TextToSpeech
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
@@ -114,12 +116,27 @@ class ChatFragment : Fragment() {
 
         enableEdgeToEdge()
         sendInitialMessage()
+
+        // Text-to-Speech initialization
+        tts = TextToSpeech(requireContext()) { status ->
+            if (status == TextToSpeech.SUCCESS) {
+                val result = tts.setLanguage(Locale.US)
+                if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                    Log.e("TTS", "Language not supported")
+                }
+            } else {
+                Log.e("TTS", "Initialization failed")
+            }
+        }
+
         return view
     }
 
     override fun onDestroy() {
         super.onDestroy()
         speechRecognizer?.destroy()
+        tts.stop()
+        tts.shutdown()
     }
 
     //Permission
@@ -141,7 +158,6 @@ class ChatFragment : Fragment() {
             Toast.makeText(requireContext(), "Permission denied", Toast.LENGTH_SHORT).show()
         }
     }
-
 
     //Speech recognizer
     @SuppressLint("ClickableViewAccessibility")
@@ -182,7 +198,6 @@ class ChatFragment : Fragment() {
         }
     }
 
-
     //Initialization OpenAI API for requests and responses
     private fun getResponse(query: String) {
         messageList.add(MessageRVModal(query, "user"))
@@ -211,6 +226,7 @@ class ChatFragment : Fragment() {
                     val cleanedResponseMsg = removeNewLines(responseMsg)
                     messageList.add(MessageRVModal(cleanedResponseMsg, "bot"))
                     messageRVAdapter.notifyDataSetChanged()
+                    speakOut(cleanedResponseMsg) // Speak bot's message
                 } catch (e: JSONException) {
                     Log.e("Response", "Error parsing JSON: ${e.message}")
                     e.printStackTrace()
@@ -253,6 +269,9 @@ class ChatFragment : Fragment() {
         queue.add(postRequest)
     }
 
+    private fun speakOut(text: String) {
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "")
+    }
 
     private fun enableEdgeToEdge() {
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
@@ -261,7 +280,6 @@ class ChatFragment : Fragment() {
             insets
         }
     }
-
 
     //Initial message with random topic for discussion
     private fun sendInitialMessage() {
@@ -305,7 +323,6 @@ class ChatFragment : Fragment() {
         messageList.add(MessageRVModal(completeMessage, "bot"))
         messageRVAdapter.notifyDataSetChanged()
     }
-
 
     //Function for removing enters in bot messages
     private fun removeNewLines(input: String): String {
