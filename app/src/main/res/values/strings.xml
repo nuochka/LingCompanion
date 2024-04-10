@@ -64,5 +64,6 @@
     <string name="title_logout">Sign out from your account</string>
     <string name="subtitle_logout">Are you sure that you want to log out?</string>
     <string name="tint_text_chat">Enter your message or tap to speech</string>
+    <string name="enable_notifications">Enable Notifications</string>
 
 </resources>
