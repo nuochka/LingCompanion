@@ -22,4 +22,22 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_home"
         app:menu="@menu/activity_main2_drawer" />
+
+    <TextView
+        android:id="@+id/wordOfTheDayTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Word of the Day:"
+        android:textSize="20sp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"/>
+
+    <TextView
+        android:id="@+id/wordTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wordOfTheDayTextView"
+        android:layout_marginStart="16dp"
+        android:textSize="24sp"/>
+
 </androidx.drawerlayout.widget.DrawerLayout>
