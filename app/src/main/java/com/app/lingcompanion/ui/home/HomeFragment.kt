@@ -42,7 +42,7 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
-    private inner class DictionaryApiTask(private val textView: TextView) : AsyncTask<Void, Void, JSONArray>() {
+    inner class DictionaryApiTask(private val textView: TextView) : AsyncTask<Void, Void, JSONArray>() {
 
         override fun doInBackground(vararg params: Void?): JSONArray? {
             val client = OkHttpClient()
@@ -69,8 +69,7 @@ class HomeFragment : Fragment() {
                         val definitionsArray = meaningsArray?.optJSONObject(0)?.optJSONArray("definitions")
                         val definition = definitionsArray?.optJSONObject(0)?.optString("definition", "Definition not found")
 
-                        val meaningArray = jsonArray.getJSONObject(0).optJSONArray("meanings")
-                        val example = meaningArray?.optJSONObject(0)?.optJSONArray("definitions")?.optJSONObject(0)?.optString("example", "Example not found")
+                        val example = findExample(jsonArray)
 
                         activity?.runOnUiThread {
                             val displayText = "Word: $word\nPhonetic: $phonetic\nPart of Speech: $partOfSpeech\nDefinition: $definition\nExample: $example"
@@ -88,5 +87,22 @@ class HomeFragment : Fragment() {
             }
         }
 
+        fun findExample(jsonArray: JSONArray): String {
+            for (i in 0 until jsonArray.length()) {
+                val jsonObject = jsonArray.getJSONObject(i)
+                val meaningsArray = jsonObject.getJSONArray("meanings")
+                for (j in 0 until meaningsArray.length()) {
+                    val meaningObject = meaningsArray.getJSONObject(j)
+                    val definitionsArray = meaningObject.getJSONArray("definitions")
+                    for (k in 0 until definitionsArray.length()) {
+                        val definitionObject = definitionsArray.getJSONObject(k)
+                        if (definitionObject.has("example")) {
+                            return definitionObject.getString("example")
+                        }
+                    }
+                }
+            }
+            return "Example not found"
+        }
     }
 }
