@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">LingCompanion</string>
     <string name="start_title">Hello!</string>
-    <string name="started_sub_title">Nice to meet you! \"SpeakEaseAI\" is an advanced English speaking practice app. With tailored exercises and AI-driven feedback, it helps users improve pronunciation, vocabulary, and grammar skills. Perfect for anyone aiming for fluency in English.</string>
+    <string name="started_sub_title">Nice to meet you! \"LingCompanion\" is an advanced English speaking practice app. With tailored exercises and AI-driven feedback, it helps users improve pronunciation, vocabulary, and grammar skills. Perfect for anyone aiming for fluency in English.</string>
     <string name="illustration_img">Illustration image</string>
     <string name="btn_register">REGISTER</string>
     <string name="btn_login">LOGIN</string>
@@ -68,5 +68,6 @@
     <string name="title_current_password">Current Password</string>
     <string name="title_new_password">New password</string>
     <string name="title_confirm_new_password">Confirm new password</string>
+    <string name="nav_dictionary">Dictionary</string>
 
 </resources>
