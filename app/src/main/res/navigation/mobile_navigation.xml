@@ -17,6 +17,13 @@
         android:label="@string/title_ling_companion"
         tools:layout="@layout/fragment_chat" />
 
+
+    <fragment
+        android:id="@+id/nav_dictionary"
+        android:name="com.app.lingcompanion.ui.dictionary.DictionaryFragment"
+        android:label="Dictionary"
+        tools:layout="@layout/fragment_dictionary" />
+
     <fragment
         android:id="@+id/nav_settings"
         android:name="com.app.lingcompanion.ui.settings.SettingsFragment"
