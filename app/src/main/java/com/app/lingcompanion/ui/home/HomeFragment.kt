@@ -65,14 +65,13 @@ class HomeFragment : Fragment() {
                         val phonetic = firstItem.optString("phonetic", "Phonetic not found")
 
                         val meaningsArray = firstItem.optJSONArray("meanings")
-                        val partOfSpeech = meaningsArray?.optJSONObject(0)?.optString("partOfSpeech", "Part of speech not found")
                         val definitionsArray = meaningsArray?.optJSONObject(0)?.optJSONArray("definitions")
                         val definition = definitionsArray?.optJSONObject(0)?.optString("definition", "Definition not found")
 
                         val example = findExample(jsonArray)
 
                         activity?.runOnUiThread {
-                            val displayText = "Word: $word\nPhonetic: $phonetic\nPart of Speech: $partOfSpeech\nDefinition: $definition\nExample: $example"
+                            val displayText = "$word\n$phonetic\n\n- $definition\n$example"
                             textView.text = displayText
                         }
                     } else {
