@@ -9,7 +9,6 @@ import android.widget.SearchView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.app.lingcompanion.databinding.FragmentDictionaryBinding
-import com.app.lingcompanion.ui.home.HomeFragment
 import org.json.JSONArray
 import org.json.JSONException
 import okhttp3.OkHttpClient
@@ -20,7 +19,6 @@ class DictionaryFragment : Fragment() {
     private var _binding: FragmentDictionaryBinding? = null
     private val binding get() = _binding!!
 
-    private val homeFragment = HomeFragment()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

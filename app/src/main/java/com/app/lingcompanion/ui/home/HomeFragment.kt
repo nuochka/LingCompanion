@@ -1,9 +1,9 @@
 package com.app.lingcompanion.ui.home
 
-import android.annotation.SuppressLint
+
+import android.content.res.Resources
 import android.os.AsyncTask
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,12 +14,12 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONArray
 import org.json.JSONException
-import org.json.JSONObject
+import com.app.lingcompanion.R
+import java.util.*
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
-
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -32,9 +32,18 @@ class HomeFragment : Fragment() {
 
         val wordTextView: TextView = binding.wordTextView
 
-        DictionaryApiTask(wordTextView).execute()
+        val englishWordsArray = resources.getStringArray(R.array.english_words)
+        val randomWord = getRandomWord(englishWordsArray)
+
+        val apiUrl = "https://api.dictionaryapi.dev/api/v2/entries/en/$randomWord"
+        DictionaryApiTask(wordTextView).execute(apiUrl)
 
         return root
+    }
+
+    private fun getRandomWord(wordsArray: Array<String>): String {
+        val random = Random()
+        return wordsArray[random.nextInt(wordsArray.size)]
     }
 
     override fun onDestroyView() {
@@ -42,17 +51,21 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
-    inner class DictionaryApiTask(private val textView: TextView) : AsyncTask<Void, Void, JSONArray>() {
+    inner class DictionaryApiTask(private val textView: TextView) : AsyncTask<String, Void, JSONArray>() {
 
-        override fun doInBackground(vararg params: Void?): JSONArray? {
-            val client = OkHttpClient()
-            val request = Request.Builder()
-                .url("https://api.dictionaryapi.dev/api/v2/entries/en/particular")
-                .build()
+        override fun doInBackground(vararg params: String?): JSONArray? {
+            val apiUrl = params[0]
+            apiUrl?.let {
+                val client = OkHttpClient()
+                val request = Request.Builder()
+                    .url(apiUrl)
+                    .build()
 
-            val response = client.newCall(request).execute()
-            val responseData = response.body?.string()
-            return responseData?.let { JSONArray(it) }
+                val response = client.newCall(request).execute()
+                val responseData = response.body?.string()
+                return responseData?.let { JSONArray(it) }
+            }
+            return null
         }
 
         override fun onPostExecute(result: JSONArray?) {
@@ -86,7 +99,7 @@ class HomeFragment : Fragment() {
             }
         }
 
-        fun findExample(jsonArray: JSONArray): String {
+        private fun findExample(jsonArray: JSONArray): String {
             for (i in 0 until jsonArray.length()) {
                 val jsonObject = jsonArray.getJSONObject(i)
                 val meaningsArray = jsonObject.getJSONArray("meanings")
