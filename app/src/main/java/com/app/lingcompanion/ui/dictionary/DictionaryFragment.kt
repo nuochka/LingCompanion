@@ -7,18 +7,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.app.lingcompanion.databinding.FragmentDictionaryBinding
 import org.json.JSONArray
 import org.json.JSONException
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import com.app.lingcompanion.ui.WordFileManager
 
 class DictionaryFragment : Fragment() {
 
     private var _binding: FragmentDictionaryBinding? = null
     private val binding get() = _binding!!
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,6 +43,16 @@ class DictionaryFragment : Fragment() {
                 return false
             }
         })
+
+        binding.addButton.setOnClickListener {
+            val currentWord = wordTextView.text.toString()
+            if (currentWord.isNotEmpty()) {
+                WordFileManager.saveWord(requireContext(), currentWord)
+                Toast.makeText(requireContext(), "The word was added", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), "The word is missing", Toast.LENGTH_SHORT).show()
+            }
+        }
 
         return root
     }

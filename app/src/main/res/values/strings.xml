@@ -69,5 +69,6 @@
     <string name="title_new_password">New password</string>
     <string name="title_confirm_new_password">Confirm new password</string>
     <string name="nav_dictionary">Dictionary</string>
+    <string name="nav_my_words">My words</string>
 
 </resources>
