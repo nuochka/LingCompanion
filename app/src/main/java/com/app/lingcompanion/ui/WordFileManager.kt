@@ -1,16 +1,21 @@
 package com.app.lingcompanion.ui
+
 import android.content.Context
+import com.app.lingcompanion.ui.myWords.Word
+import com.google.gson.Gson
 import java.io.*
 
 object WordFileManager {
 
-    private const val FILENAME = "words.txt"
+    private const val FILENAME = "words.json"
 
-    fun saveWord(context: Context, word: String) {
+    fun saveWord(context: Context, word: Word) {
         try {
             val outputStream = context.openFileOutput(FILENAME, Context.MODE_APPEND)
             val writer = BufferedWriter(OutputStreamWriter(outputStream))
-            writer.write("$word\n")
+            val gson = Gson()
+            val wordJson = gson.toJson(word)
+            writer.write("$wordJson\n")
             writer.close()
             outputStream.close()
         } catch (e: IOException) {
@@ -18,14 +23,16 @@ object WordFileManager {
         }
     }
 
-    fun loadWords(context: Context): Set<String> {
-        val words = HashSet<String>()
+    fun loadWords(context: Context): List<Word> {
+        val words = mutableListOf<Word>()
         try {
             val inputStream = context.openFileInput(FILENAME)
             val reader = BufferedReader(InputStreamReader(inputStream))
             var line: String?
             while (reader.readLine().also { line = it } != null) {
-                line?.let { words.add(it) }
+                val gson = Gson()
+                val word = gson.fromJson(line, Word::class.java)
+                words.add(word)
             }
             reader.close()
             inputStream.close()
@@ -37,9 +44,8 @@ object WordFileManager {
         return words
     }
 
-
-    fun deleteWord(context: Context, word: String) {
-        val tempFile = File(context.filesDir, "temp.txt")
+    fun deleteWord(context: Context, word: Word) {
+        val tempFile = File(context.filesDir, "temp.json")
         try {
             val inputStream = context.openFileInput(FILENAME)
             val outputStream = FileOutputStream(tempFile)
@@ -47,8 +53,11 @@ object WordFileManager {
             val writer = BufferedWriter(OutputStreamWriter(outputStream))
             var line: String?
             while (reader.readLine().also { line = it } != null) {
-                if (line != word) {
-                    writer.write("$line\n")
+                val gson = Gson()
+                val currentWord = gson.fromJson(line, Word::class.java)
+                if (currentWord != word) {
+                    val wordJson = gson.toJson(currentWord)
+                    writer.write("$wordJson\n")
                 }
             }
             reader.close()

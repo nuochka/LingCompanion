@@ -15,6 +15,7 @@ import org.json.JSONException
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import com.app.lingcompanion.ui.WordFileManager
+import com.app.lingcompanion.ui.myWords.Word
 
 class DictionaryFragment : Fragment() {
 
@@ -47,12 +48,14 @@ class DictionaryFragment : Fragment() {
         binding.addButton.setOnClickListener {
             val currentWord = wordTextView.text.toString()
             if (currentWord.isNotEmpty()) {
-                WordFileManager.saveWord(requireContext(), currentWord)
+                val word = Word(currentWord, null, null, null, null)
+                WordFileManager.saveWord(requireContext(), word)
                 Toast.makeText(requireContext(), "The word was added", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(requireContext(), "The word is missing", Toast.LENGTH_SHORT).show()
             }
         }
+
 
         return root
     }

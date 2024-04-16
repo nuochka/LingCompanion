@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -22,14 +23,27 @@ class MyWordsFragment : Fragment() {
         val savedWords = WordFileManager.loadWords(requireContext())
 
         savedWords.forEach { word ->
+            val wordLayout = LinearLayout(requireContext())
+            wordLayout.orientation = LinearLayout.HORIZONTAL
+
             val textView = TextView(requireContext())
-            textView.text = word
-            textView.setOnLongClickListener {
+            textView.text = word.toString()
+            val layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            layoutParams.weight = 1.0f
+            textView.layoutParams = layoutParams
+
+            val deleteButton = inflater.inflate(R.layout.delete_button, savedWordsContainer, false) as Button
+            deleteButton.setOnClickListener {
                 WordFileManager.deleteWord(requireContext(), word)
-                savedWordsContainer.removeView(textView)
-                true
+                savedWordsContainer.removeView(wordLayout)
             }
-            savedWordsContainer.addView(textView)
+
+            wordLayout.addView(textView)
+            wordLayout.addView(deleteButton)
+            savedWordsContainer.addView(wordLayout)
         }
 
         return root
