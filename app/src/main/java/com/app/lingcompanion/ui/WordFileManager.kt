@@ -23,6 +23,12 @@ object WordFileManager {
         }
     }
 
+    fun wordExists(context: Context, word: Word): Boolean {
+        val words = loadWords(context)
+        return words.any { it == word }
+    }
+
+
     fun loadWords(context: Context): List<Word> {
         val words = mutableListOf<Word>()
         try {

@@ -49,12 +49,17 @@ class DictionaryFragment : Fragment() {
             val currentWord = wordTextView.text.toString()
             if (currentWord.isNotEmpty()) {
                 val word = Word(currentWord, null, null, null, null)
-                WordFileManager.saveWord(requireContext(), word)
-                Toast.makeText(requireContext(), "The word was added", Toast.LENGTH_SHORT).show()
+                if (WordFileManager.wordExists(requireContext(), word)) {
+                    Toast.makeText(requireContext(), "The word already exists in MyWords", Toast.LENGTH_SHORT).show()
+                } else {
+                    WordFileManager.saveWord(requireContext(), word)
+                    Toast.makeText(requireContext(), "The word was added", Toast.LENGTH_SHORT).show()
+                }
             } else {
                 Toast.makeText(requireContext(), "The word is missing", Toast.LENGTH_SHORT).show()
             }
         }
+
 
 
         return root

@@ -27,7 +27,7 @@ class MyWordsFragment : Fragment() {
             wordLayout.orientation = LinearLayout.HORIZONTAL
 
             val textView = TextView(requireContext())
-            textView.text = word.toString()
+            textView.text = word.word
             val layoutParams = LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
