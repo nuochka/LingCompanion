@@ -62,60 +62,50 @@ class HomeFragment : Fragment() {
         val formattedDate = sdf.format(currentDate.time)
 
         val squaresSharedPreferences = requireActivity().getSharedPreferences("Squares", Context.MODE_PRIVATE)
-        val isSquareColoredToday = squaresSharedPreferences.getBoolean(formattedDate, false)
+        val userStreakTextView: TextView = root.findViewById(R.id.user_streak)
 
-        // Getting a current amount of the days
+        // Getting the current streak count
         var streakCount = squaresSharedPreferences.getInt("StreakCount", 0)
 
-        if (!isSquareColoredToday) {
-            // Coloring a square
-            squares[coloredSquareIndex].setBackgroundColor(Color.rgb(142, 36, 170))
 
-            streakCount++
+        //Clear data from Shared Preferences
+        //squaresSharedPreferences.edit().clear().apply()
 
-            with(squaresSharedPreferences.edit()) {
-                putBoolean(formattedDate, true)
-                putInt("StreakCount", streakCount)
-                apply()
+        for ((index, square) in squares.withIndex()) {
+            val isSquareColored = squaresSharedPreferences.getBoolean("streak-$index", false)
+            if (isSquareColored) {
+                square.setBackgroundColor(Color.rgb(142, 36, 170))
+            } else {
+                square.setBackgroundColor(Color.rgb(100, 100, 100))
             }
-
-            Toast.makeText(requireContext(), "Your today's streak was saved", Toast.LENGTH_SHORT).show()
-        } else {
-            // If a square was colored, update the color
-            squares[coloredSquareIndex].setBackgroundColor(Color.rgb(142, 36, 170))
-            streakCount++
-            streakCount = squaresSharedPreferences.getInt("StreakCount", streakCount)
         }
 
         val button: Button = root.findViewById(R.id.btn_streak)
-
         button.setOnClickListener {
-            if (isSquareColoredToday) {
+            if (squaresSharedPreferences.getBoolean("streak-$coloredSquareIndex", false)) {
                 Toast.makeText(requireContext(), "You have already marked your progress", Toast.LENGTH_SHORT).show()
             } else {
-                for (square in squares) {
-                    square.setBackgroundColor(Color.rgb(142, 36, 170))
-                }
+                squares[coloredSquareIndex].setBackgroundColor(Color.rgb(142, 36, 170))
 
-                // If user skips one day, counter is reset to zero
-                streakCount = 0
+                if (!squaresSharedPreferences.getBoolean("streak-$coloredSquareIndex", false)) {
+                    streakCount = 0
+                }
 
                 with(squaresSharedPreferences.edit()) {
-                    putBoolean(formattedDate, true)
-                    putInt("StreakCount", streakCount)
+                    putBoolean("streak-$coloredSquareIndex", true)
+                    putInt("StreakCount", ++streakCount)
                     apply()
                 }
+                userStreakTextView.text = "Your streak: $streakCount days"
 
                 Toast.makeText(requireContext(), "Your today's streak was saved", Toast.LENGTH_SHORT).show()
             }
         }
 
-        val userStreakTextView: TextView = root.findViewById(R.id.user_streak)
         userStreakTextView.text = "Your streak: $streakCount days"
 
         return root
     }
-
 
 
     //Getting a random word from a list
