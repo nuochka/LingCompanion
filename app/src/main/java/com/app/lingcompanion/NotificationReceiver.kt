@@ -10,9 +10,20 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 
 class NotificationReceiver : BroadcastReceiver() {
-    override fun onReceive(context: Context, intent: Intent) {
-        showNotification(context)
+    companion object {
+        private var notificationsEnabled = true
+
+        fun setNotificationsEnabled(enabled: Boolean) {
+            notificationsEnabled = enabled
+        }
     }
+
+    override fun onReceive(context: Context, intent: Intent) {
+        if (notificationsEnabled) {
+            showNotification(context)
+        }
+    }
+
 
     private fun showNotification(context: Context) {
         Log.d("message", "hello")
