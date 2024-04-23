@@ -74,9 +74,9 @@ class HomeFragment : Fragment() {
         for ((index, square) in squares.withIndex()) {
             val isSquareColored = squaresSharedPreferences.getBoolean("streak-$index", false)
             if (isSquareColored) {
-                square.setBackgroundColor(Color.rgb(142, 36, 170))
+                square.setBackgroundColor(Color.rgb(57, 54, 145))
             } else {
-                square.setBackgroundColor(Color.rgb(100, 100, 100))
+                square.setBackgroundColor(Color.rgb(188, 185, 240))
             }
         }
 

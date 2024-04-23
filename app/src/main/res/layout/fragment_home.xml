@@ -4,246 +4,283 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:padding="16dp"
     android:background="@color/backgroundColor"
     tools:context=".ui.home.HomeFragment">
 
+    <ImageView
+        android:id="@+id/home_image"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:contentDescription="@string/home_image"
+        android:src="@drawable/teleworking2" />
+
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="2dp"
+        android:layout_height="500dp"
         android:backgroundTint="@color/primary_color"
         android:elevation="8dp"
-        android:padding="16dp"
-        app:cardCornerRadius="20dp">
+        app:cardBackgroundColor="@color/grey"
+        app:cardCornerRadius="30dp">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/wordOfTheDayTextView"
+            style="@style/titles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="30dp"
+            android:layout_marginBottom="16dp"
+            android:text="The word of the day!"
+            android:textColor="@color/grey_light"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/theWordOfTheDay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="70dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="30dp"
+            android:backgroundTint="@color/white"
+            android:elevation="8dp"
+            android:padding="10dp"
+            app:cardCornerRadius="15dp"
+            app:layout_constraintTop_toBottomOf="@+id/wordOfTheDayTextView">
 
-            <TextView
-                android:id="@+id/wordOfTheDayTextView"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/wordTextView"
+                    style="@style/SubTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_marginBottom="16dp"
+                    android:textColor="@color/primary_color"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/user_streak"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="220dp"
+            android:layout_marginStart="30dp"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:textColor="@color/grey_light"
+            style="@style/titles"
+            />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/streak"
+            android:layout_width="wrap_content"
+            android:layout_height="96dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="260dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="20dp"
+            app:layout_constraintTop_toBottomOf="@+id/theWordOfTheDay">
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="The word of the day!"
-                android:layout_margin="10dp"
-                android:textSize="25sp"
-                android:textStyle="bold"
-                android:textColor="#DFDFDF"
-                android:layout_marginBottom="16dp"
-                style="@style/titles"/>
+                android:layout_margin="17dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/wordTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:textSize="18sp"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:layout_marginBottom="16dp"
-                style="@style/SubTitle"/>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
 
-        </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="M"
+                        android:textColor="@color/grey"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:id="@+id/square1"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/square_border" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="T"
+                        android:textColor="@color/grey"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:id="@+id/square2"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/square_border" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="W"
+                        android:textColor="@color/grey"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:id="@+id/square3"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/square_border" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="T"
+                        android:textColor="@color/grey"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:id="@+id/square4"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/square_border" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="F"
+                        android:textColor="@color/grey"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:id="@+id/square5"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/square_border" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="S"
+                        android:textColor="@color/grey"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:id="@+id/square6"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/square_border" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="S"
+                        android:textColor="@color/grey"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:id="@+id/square7"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/square_border" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_streak"
+            style="@style/ButtonWhite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="370dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:text="I studied English today"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/streak"
+            />
     </androidx.cardview.widget.CardView>
-
-
-    <TextView
-        android:id="@+id/user_streak"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        android:textColor="@color/grey"
-        style="@style/titles"/>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="30dp"
-        android:baselineAligned="false">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center_horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="M"
-                android:textSize="16sp"
-                android:textColor="@color/grey" />
-
-            <View
-                android:id="@+id/square1"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/square_border"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginStart="5dp"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center_horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="T"
-                android:textSize="16sp"
-                android:textColor="@color/grey" />
-
-            <View
-                android:id="@+id/square2"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/square_border"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginStart="5dp"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center_horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="W"
-                android:textSize="16sp"
-                android:textColor="@color/grey" />
-
-            <View
-                android:id="@+id/square3"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/square_border"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginStart="5dp"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center_horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="T"
-                android:textSize="16sp"
-                android:textColor="@color/grey" />
-
-            <View
-                android:id="@+id/square4"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/square_border"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginStart="5dp"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center_horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="F"
-                android:textSize="16sp"
-                android:textColor="@color/grey" />
-
-            <View
-                android:id="@+id/square5"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/square_border"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginStart="5dp"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center_horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="S"
-                android:textSize="16sp"
-                android:textColor="@color/grey" />
-
-            <View
-                android:id="@+id/square6"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/square_border"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginStart="5dp"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center_horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="S"
-                android:textSize="16sp"
-                android:textColor="@color/grey" />
-
-            <View
-                android:id="@+id/square7"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/square_border"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginStart="5dp"/>
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_streak"
-        style="@style/ButtonPurple"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="60dp"
-        android:layout_marginLeft="60dp"
-        android:text="I studied English today"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
 </LinearLayout>
+
+

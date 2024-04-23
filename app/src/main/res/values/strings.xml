@@ -70,5 +70,6 @@
     <string name="title_confirm_new_password">Confirm new password</string>
     <string name="nav_dictionary">Dictionary</string>
     <string name="nav_my_words">My words</string>
+    <string name="home_image">home image</string>
 
 </resources>
