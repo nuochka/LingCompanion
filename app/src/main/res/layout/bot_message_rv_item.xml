@@ -9,7 +9,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/white"
+        app:cardBackgroundColor="@color/chatMessageBackground"
         app:cardCornerRadius="16dp"
         app:cardElevation="0dp"
         app:cardPreventCornerOverlap="false"
@@ -26,8 +26,9 @@
             android:paddingLeft="12dp"
             android:paddingRight="12dp"
             android:paddingTop="8dp"
+            android:paddingBottom="8dp"
             android:text="Message"
-            android:textColor="@color/black"
+            android:textColor="@color/grey_light"
             android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@+id/idTVNickname"
             app:layout_constraintTop_toTopOf="parent" />

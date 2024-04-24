@@ -27,7 +27,7 @@
             android:paddingRight="12dp"
             android:paddingTop="8dp"
             android:text="User Message"
-            android:textColor="@color/white"
+            android:textColor="@color/grey_light"
             android:textSize="16sp"/>
 
     </androidx.cardview.widget.CardView>
