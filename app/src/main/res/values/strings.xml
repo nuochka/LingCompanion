@@ -7,7 +7,7 @@
     <string name="btn_login">LOGIN</string>
     <string name="login_title">Sign in</string>
     <string name="login_sub_title">
-        <font color="#FF8E24AA"><b>Login</b></font>
+        <font color="#393691"><b>Login</b></font>
         if you already have an account.
     </string>
     <string name="login_email">Your email or username</string>
@@ -15,11 +15,11 @@
     <string name="login_forgot_pw">Forgot password?</string>
     <string name="login_havent_account">
         I do not have an account
-        <font color="#FF8E24AA"><b>Register</b></font>
+        <font color="#393691"><b>Register</b></font>
     </string>
     <string name="register_title">Sign up</string>
     <string name="register_sub_title">
-        <font color="#FF8E24AA"><b>Register</b></font>
+        <font color="#393691"><b>Register</b></font>
         to get started.
     </string>
     <string name="register_fullname">Your full name</string>
@@ -27,7 +27,7 @@
     <string name="register_password">Your password</string>
     <string name="register_username">Your username</string>
     <string name="register_confirm_password">Confirm your password</string>
-    <string name="register_have_account">I already have an account<font color="#FF8E24AA"><b> Login</b></font></string>
+    <string name="register_have_account">I already have an account<font color="#393691"><b> Login</b></font></string>
     <string name="btn_logout">YES</string>
 
     <string name="reset_pw_title">Reset your password</string>
