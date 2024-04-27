@@ -69,7 +69,7 @@ class HomeFragment : Fragment() {
 
 
         //Clear data from Shared Preferences
-        //squaresSharedPreferences.edit().clear().apply()
+        // squaresSharedPreferences.edit().clear().apply()
 
         for ((index, square) in squares.withIndex()) {
             val isSquareColored = squaresSharedPreferences.getBoolean("streak-$index", false)
@@ -85,15 +85,14 @@ class HomeFragment : Fragment() {
             if (squaresSharedPreferences.getBoolean("streak-$coloredSquareIndex", false)) {
                 Toast.makeText(requireContext(), "You have already marked your progress", Toast.LENGTH_SHORT).show()
             } else {
-                squares[coloredSquareIndex].setBackgroundColor(Color.rgb(142, 36, 170))
+                squares[coloredSquareIndex].setBackgroundColor(Color.rgb(57, 54, 145))
 
                 if (!squaresSharedPreferences.getBoolean("streak-$coloredSquareIndex", false)) {
-                    streakCount = 0
+                    streakCount++
                 }
-
                 with(squaresSharedPreferences.edit()) {
                     putBoolean("streak-$coloredSquareIndex", true)
-                    putInt("StreakCount", ++streakCount)
+                    putInt("StreakCount", streakCount)
                     apply()
                 }
                 userStreakTextView.text = "Your streak: $streakCount days"
@@ -101,6 +100,7 @@ class HomeFragment : Fragment() {
                 Toast.makeText(requireContext(), "Your today's streak was saved", Toast.LENGTH_SHORT).show()
             }
         }
+
 
         userStreakTextView.text = "Your streak: $streakCount days"
 
