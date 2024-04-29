@@ -42,6 +42,9 @@
             android:name=".LoginActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
+        <activity android:name=".QuestionsActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

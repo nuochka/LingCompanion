@@ -71,5 +71,18 @@
     <string name="nav_dictionary">Dictionary</string>
     <string name="nav_my_words">My words</string>
     <string name="home_image">home image</string>
+    <string name="text_for_interests">Feel free to select any combination of interests that appeal to you. Your selections will help us personalize your experience</string>
+    <string name="save_button">Save</string>
+    <string name="science_interest">Science</string>
+    <string name="travel_interest">Travel</string>
+    <string name="food_interest">Food</string>
+    <string name="music_interest">Music</string>
+    <string name="culture_interest">Culture</string>
+    <string name="sport_interest">Sport</string>
+    <string name="choose_your_interests_title">Choose Your Interests</string>
+    <string name="advanced_level">Advanced</string>
+    <string name="intermediate_level">Intermediate</string>
+    <string name="beginner_level">Beginner</string>
+    <string name="choose_your_english_level_title">Choose Your English Level</string>
 
 </resources>

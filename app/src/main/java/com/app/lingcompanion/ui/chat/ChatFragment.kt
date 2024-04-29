@@ -55,8 +55,8 @@ class ChatFragment : Fragment() {
 
     //OpenAI API
     private var url = "https://api.openai.com/v1/completions"
-    private val apiKey = "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"
-    private val organizationId = "org-8b4c3vvL9PhyY6Yzs9KbbwiP"
+    private val apiKey = "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\n"
+    private val organizationId = "org-RrlthbetntUEyWIAHWHhahtL"
 
     //Speech recognizer
     private var speechRecognizer: SpeechRecognizer? = null
@@ -210,7 +210,7 @@ class ChatFragment : Fragment() {
         jsonObject.put("model", "gpt-3.5-turbo-instruct")
         jsonObject.put("prompt", query)
         jsonObject.put("temperature", 0)
-        jsonObject.put("max_tokens", 250)
+        jsonObject.put("max_tokens", 150)
         jsonObject.put("top_p", 1)
         jsonObject.put("frequency_penalty", 0.0)
         jsonObject.put("presence_penalty", 0.0)

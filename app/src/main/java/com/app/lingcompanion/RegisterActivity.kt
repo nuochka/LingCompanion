@@ -148,8 +148,7 @@ class RegisterActivity : AppCompatActivity() {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this){
                 if(it.isSuccessful){
-                    startActivity(Intent(this, LoginActivity::class.java))
-                    Toast.makeText(this, "Register completed successfully", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this, QuestionsActivity::class.java))
                 } else {
                     Toast.makeText(this, it.exception?.message, Toast.LENGTH_SHORT).show()
                 }
