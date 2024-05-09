@@ -85,5 +85,8 @@
     <string name="beginner_level">Beginner</string>
     <string name="choose_your_english_level_title">Choose Your English Level</string>
     <string name="nav_stories">Stories</string>
+    <string name="get_random_story_btn">Get Random Story</string>
+    <string name="random_story">Please click the button to get a random story</string>
+    <string name="play">▶</string>
 
 </resources>
