@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.stories.StoryFragment">
+
+
+        <TextView
+            android:id="@+id/storyTitleTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/storyAuthorTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/storyTitleTextView"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/storyContentTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/storyAuthorTextView"
+            android:layout_marginTop="16dp" />
+
+        <TextView
+            android:id="@+id/storyMoralTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/storyContentTextView"
+            android:layout_marginTop="16dp" />
+
+        <Button
+            android:id="@+id/getStoryButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/storyMoralTextView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="24dp"
+            android:text="Get Random Story" />
+
+</RelativeLayout>

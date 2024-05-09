@@ -35,7 +35,8 @@ class MyWordsFragment : Fragment() {
             layoutParams.weight = 1.0f
             textView.layoutParams = layoutParams
 
-            val deleteButton = inflater.inflate(R.layout.delete_button, savedWordsContainer, false) as Button
+            val deleteButton =
+                inflater.inflate(R.layout.delete_button, savedWordsContainer, false) as Button
             deleteButton.setOnClickListener {
                 WordFileManager.deleteWord(requireContext(), word)
                 savedWordsContainer.removeView(wordLayout)

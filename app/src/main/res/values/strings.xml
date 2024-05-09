@@ -84,5 +84,6 @@
     <string name="intermediate_level">Intermediate</string>
     <string name="beginner_level">Beginner</string>
     <string name="choose_your_english_level_title">Choose Your English Level</string>
+    <string name="nav_stories">Stories</string>
 
 </resources>
