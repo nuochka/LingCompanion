@@ -9,7 +9,7 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start"
     tools:context=".ui.chat.ChatFragment"
-    android:background="@color/backgroundColor">
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -36,7 +36,7 @@
         <!-- TextInputLayout for messages-->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/idTILQuery"
-            style="@style/TextInputLayoutChat"
+            style="@style/TextInputEditTextChat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/tint_text_chat"
@@ -44,7 +44,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:background="@color/chatMessageBackground">
+            >
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -53,15 +53,13 @@
                     android:id="@+id/idEdtQuery"
                     android:layout_width="345dp"
                     android:layout_height="38dp"
-                    android:background="@color/chatColor"
                     android:ems="10"
                     android:hint="@string/tint_text_chat"
                     android:imeOptions="actionSend"
                     android:importantForAutofill="no"
                     android:inputType="text"
-                    android:textColor="@color/primary_color"
-                    android:textColorHint="@color/grey"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    style="@style/TextInputLayoutChat"/>
 
                 <ImageView
                     android:id="@+id/micro_button"

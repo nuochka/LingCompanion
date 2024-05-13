@@ -42,7 +42,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             style="@style/SubTitle"
-                            android:textColor="@color/black"
                             android:layout_below="@id/storyAuthorTextView"
                             android:layout_marginTop="18dp"
                             />

@@ -59,7 +59,9 @@
         <item name="android:background">@drawable/bg_text_field</item>
         <item name="android:fontFamily">@font/montserrat</item>
     </style>
-
+    <style name="TextInputEditTextChat">
+        <item name="android:background">@color/chatMessageBackground</item>
+    </style>
     <style name="titles">
         <item name="android:fontFamily">@font/montserrat</item>
         <item name="android:textStyle">bold</item>
@@ -67,7 +69,10 @@
     </style>
 
     <style name="TextInputLayoutChat" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-        <item name="boxStrokeColor">@color/grey_light</item>
+        <item name="boxStrokeColor">@color/chatMessageBackground</item>
+        <item name="android:textColor">@color/primary_color</item>
+        <item name="android:textColorHint">@color/grey</item>
+        <item name="android:background">@color/chatColor</item>
         <item name="boxStrokeWidth">1dp</item>
         <item name="android:radius">12dp</item>
     </style>
