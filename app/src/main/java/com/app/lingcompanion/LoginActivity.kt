@@ -53,7 +53,7 @@ class LoginActivity : AppCompatActivity() {
         // Button enable
         val invalidFieldsStream = Observable.combineLatest(
             usernameStream,
-            passwordStream,
+            passwordStream
         ) { usernameInvalid: Boolean, passwordInvalid: Boolean ->
             !usernameInvalid && !passwordInvalid
         }
@@ -82,6 +82,7 @@ class LoginActivity : AppCompatActivity() {
         binding.tvForgotPw.setOnClickListener{
             startActivity(Intent(this, ResetPasswordActivity::class.java))
         }
+
         // Configure system bars padding
         enableEdgeToEdge()
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
@@ -103,11 +104,16 @@ class LoginActivity : AppCompatActivity() {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { login ->
                 if (login.isSuccessful) {
-                    Intent(this, HomeActivity::class.java).also {
-                        it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        startActivity(it)
+                    val user = auth.currentUser
+                    if (user != null && user.isEmailVerified) {
+                        Intent(this, HomeActivity::class.java).also {
+                            it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            startActivity(it)
+                        }
+                        Toast.makeText(this, "Login completed successfully", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this, "Please verify your email address.", Toast.LENGTH_SHORT).show()
                     }
-                    Toast.makeText(this, "Login completed successfully", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this, login.exception?.message, Toast.LENGTH_SHORT).show()
                 }

@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Patterns
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
@@ -146,12 +147,48 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun registerUser(email: String, password: String){
         auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this){
-                if(it.isSuccessful){
-                    startActivity(Intent(this, QuestionsActivity::class.java))
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sending mail with verification
+                    sendEmailVerification()
                 } else {
-                    Toast.makeText(this, it.exception?.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, task.exception?.message, Toast.LENGTH_SHORT).show()
                 }
             }
     }
+
+    // Sending verification mail
+    private fun sendEmailVerification() {
+        val user = auth.currentUser
+        user?.sendEmailVerification()
+            ?.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    checkEmailVerificationStatus()
+                } else {
+                    Toast.makeText(this, "Failed to send verification email.", Toast.LENGTH_SHORT).show()
+                }
+            }
+    }
+
+    private fun checkEmailVerificationStatus() {
+        val user = auth.currentUser
+        if (user != null && user.isEmailVerified) {
+            startActivity(Intent(this, QuestionsActivity::class.java))
+        } else {
+            showEmailVerificationDialog()
+        }
+    }
+
+    //Function for showing a dialog about verification
+    private fun showEmailVerificationDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Verify Your Email")
+            .setMessage("A verification email has been sent to your email address. Please verify your email before proceeding.")
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+                startActivity(Intent(this, QuestionsActivity::class.java))
+            }
+            .show()
+    }
+
 }
