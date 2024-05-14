@@ -55,8 +55,7 @@ class ChatFragment : Fragment() {
 
     //OpenAI API
     private var url = "https://api.openai.com/v1/completions"
-    private val apiKey = "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\n"
-    private val organizationId = "org-RrlthbetntUEyWIAHWHhahtL"
+    private val apiKey = ApiConfig.getApiKey()
 
     //Speech recognizer
     private var speechRecognizer: SpeechRecognizer? = null
@@ -248,7 +247,6 @@ class ChatFragment : Fragment() {
                 val params: MutableMap<String, String> = HashMap()
                 params["Content-Type"] = "application/json"
                 params["Authorization"] = "Bearer $apiKey"
-                params["OpenAI-Organization"] = organizationId
                 return params
             }
 
