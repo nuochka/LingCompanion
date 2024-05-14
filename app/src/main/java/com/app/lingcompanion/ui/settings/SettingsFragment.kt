@@ -68,34 +68,38 @@ class SettingsFragment : Fragment() {
     }
 
     // Method to change password
-    private fun changePassword(){
+    private fun changePassword() {
         val currentPassword = binding.etCurrentPassword.text.toString()
         val newPassword = binding.etNewPassword.text.toString()
         val confirmPassword = binding.etConfirmNewPassword.text.toString()
 
-        if(currentPassword.isNotEmpty() && newPassword.isNotEmpty() && confirmPassword.isNotEmpty()){
-            if(newPassword == confirmPassword){
-                val credential = EmailAuthProvider.getCredential(currentUser.email!!, currentPassword)
-                currentUser.reauthenticate(credential)
-                    .addOnCompleteListener { reAuthTask ->
-                        if (reAuthTask.isSuccessful) {
-                            // Change password
-                            currentUser.updatePassword(newPassword)
-                                .addOnCompleteListener { updatePasswordTask ->
-                                    if (updatePasswordTask.isSuccessful) {
-                                        Toast.makeText(context, "Password changed successfully", Toast.LENGTH_SHORT).show()
-                                        // Clear fields after successful change
-                                        binding.etCurrentPassword.text.clear()
-                                        binding.etNewPassword.text.clear()
-                                        binding.etConfirmNewPassword.text.clear()
-                                    } else {
-                                        Toast.makeText(context, "Failed to change password", Toast.LENGTH_SHORT).show()
+        if (currentPassword.isNotEmpty() && newPassword.isNotEmpty() && confirmPassword.isNotEmpty()) {
+            if (newPassword == confirmPassword) {
+                if (newPassword.length >= 6) {
+                    val credential = EmailAuthProvider.getCredential(currentUser.email!!, currentPassword)
+                    currentUser.reauthenticate(credential)
+                        .addOnCompleteListener { reAuthTask ->
+                            if (reAuthTask.isSuccessful) {
+                                // Change password
+                                currentUser.updatePassword(newPassword)
+                                    .addOnCompleteListener { updatePasswordTask ->
+                                        if (updatePasswordTask.isSuccessful) {
+                                            Toast.makeText(context, "Password changed successfully", Toast.LENGTH_SHORT).show()
+                                            // Clear fields after successful change
+                                            binding.etCurrentPassword.text.clear()
+                                            binding.etNewPassword.text.clear()
+                                            binding.etConfirmNewPassword.text.clear()
+                                        } else {
+                                            Toast.makeText(context, "Failed to change password", Toast.LENGTH_SHORT).show()
+                                        }
                                     }
-                                }
-                        } else {
-                            Toast.makeText(context, "Authentication failed. Please check your current password.", Toast.LENGTH_SHORT).show()
+                            } else {
+                                Toast.makeText(context, "Authentication failed. Please check your current password.", Toast.LENGTH_SHORT).show()
+                            }
                         }
-                    }
+                } else {
+                    Toast.makeText(context, "New password must be at least 6 characters long", Toast.LENGTH_SHORT).show()
+                }
             } else {
                 Toast.makeText(context, "New password and confirm password do not match", Toast.LENGTH_SHORT).show()
             }
