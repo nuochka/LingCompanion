@@ -15,6 +15,7 @@ LingCompanion leverages cutting-edge artificial intelligence to create a dynamic
 - **Personalized Learning Paths:** Craft your unique learning journey by selecting topics of interest and setting learning goals that match your individual needs and preferences.
   
 - **Day Tracking:** Keep a record of your English learning journey by tracking the days you dedicate to language practice. This feature helps you monitor your consistency and commitment over time, allowing you to see patterns in your study habits and identify areas for improvement.
+- **Translation Functionality:** LingCompanion integrates a powerful translator feature, enabling seamless translation between different languages. With the translator, you can translate text from one language to another, facilitating comprehension and communication across language barriers.
 
 ## Getting Started
 
