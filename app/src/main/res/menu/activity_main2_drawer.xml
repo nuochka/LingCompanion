@@ -23,6 +23,11 @@
             android:title="@string/nav_my_words" />
 
         <item
+            android:id="@+id/nav_translate"
+            android:icon="@drawable/nav_translate"
+            android:title="Translate" />
+
+        <item
             android:id="@+id/nav_stories"
             android:icon="@drawable/nav_stories"
             android:title="@string/nav_stories" />
