@@ -35,6 +35,7 @@ class DictionaryFragment : Fragment() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let {
+                    // Execute dictionary API task when search query is submitted
                     DictionaryApiTask(wordTextView).execute(it)
                 }
                 return false
@@ -46,6 +47,7 @@ class DictionaryFragment : Fragment() {
         })
 
         binding.addButton.setOnClickListener {
+            // Add word to MyWords when the add button is clicked
             val currentWord = wordTextView.text.toString()
             if (currentWord.isNotEmpty()) {
                 val word = Word(currentWord, null, null, null, null)
@@ -60,8 +62,6 @@ class DictionaryFragment : Fragment() {
             }
         }
 
-
-
         return root
     }
 
@@ -70,6 +70,7 @@ class DictionaryFragment : Fragment() {
         _binding = null
     }
 
+    // AsyncTask to fetch data from the dictionary API
     private inner class DictionaryApiTask(private val textView: TextView) : AsyncTask<String, Void, JSONArray>() {
 
         override fun doInBackground(vararg params: String?): JSONArray? {
@@ -88,18 +89,18 @@ class DictionaryFragment : Fragment() {
             result?.let { jsonArray ->
                 try {
                     if (jsonArray.length() > 0) {
+                        // Extract relevant information from the JSON response
                         val firstItem = jsonArray.getJSONObject(0)
                         val word = firstItem.optString("word", "Word not found")
                         val phonetic = firstItem.optString("phonetic", "Phonetic not found")
-
                         val meaningsArray = firstItem.optJSONArray("meanings")
                         val partOfSpeech = meaningsArray?.optJSONObject(0)?.optString("partOfSpeech", "Part of speech not found")
                         val definitionsArray = meaningsArray?.optJSONObject(0)?.optJSONArray("definitions")
                         val definition = definitionsArray?.optJSONObject(0)?.optString("definition", "Definition not found")
-
                         val example = findExample(jsonArray)
 
                         activity?.runOnUiThread {
+                            // Update UI with fetched data
                             val displayText = "Word: $word\nPhonetic: $phonetic\nPart of Speech: $partOfSpeech\nDefinition: $definition\nExample: $example"
                             textView.text = displayText
                         }
@@ -115,6 +116,7 @@ class DictionaryFragment : Fragment() {
             }
         }
 
+        // Find example sentence from the JSON response
         fun findExample(jsonArray: JSONArray): String {
             for (i in 0 until jsonArray.length()) {
                 val jsonObject = jsonArray.getJSONObject(i)
