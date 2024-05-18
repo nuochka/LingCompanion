@@ -32,6 +32,16 @@ class StoryFragment : Fragment(), TextToSpeech.OnInitListener {
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_story, container, false)
 
+        initializeViews(rootView)
+        textToSpeech = TextToSpeech(requireContext(), this)
+
+        setClickListeners()
+
+        return rootView
+    }
+
+    private fun initializeViews(rootView: View) {
+        // Initialize views
         storyTitleTextView = rootView.findViewById(R.id.storyTitleTextView)
         storyAuthorTextView = rootView.findViewById(R.id.storyAuthorTextView)
         storyContentTextView = rootView.findViewById(R.id.storyContentTextView)
@@ -39,17 +49,23 @@ class StoryFragment : Fragment(), TextToSpeech.OnInitListener {
         getStoryButton = rootView.findViewById(R.id.getStoryButton)
         speakButton = rootView.findViewById(R.id.speakButton)
         textToSpeech = TextToSpeech(requireContext(), this)
+    }
 
+    private fun setClickListeners() {
+        // Set click listener for the "Get Story" button
         getStoryButton.setOnClickListener {
             loadRandomStory()
         }
 
+        // Set click listener for the "Speak" button
         speakButton.setOnClickListener {
+            // Construct the full story text
             val fullStory = "${storyTitleTextView.text}\n" +
                     "${storyAuthorTextView.text}\n\n" +
                     "${storyContentTextView.text}\n\n" +
                     "${storyMoralTextView.text}"
 
+            // Check if TTS is currently speaking
             if (isSpeaking) {
                 textToSpeech.stop()
                 isSpeaking = false
@@ -58,10 +74,9 @@ class StoryFragment : Fragment(), TextToSpeech.OnInitListener {
                 isSpeaking = true
             }
         }
-
-        return rootView
     }
 
+    // Function to load a random story from the API
     private fun loadRandomStory() {
         val storyApiService = RetrofitClient.storyApiService
         val call = storyApiService.getRandomStory()
@@ -77,12 +92,14 @@ class StoryFragment : Fragment(), TextToSpeech.OnInitListener {
                     showToast("API error")
                 }
             }
+
             override fun onFailure(call: Call<Story>, t: Throwable) {
                 showToast("Network error")
             }
         })
     }
 
+    // Function to display the loaded story
     private fun displayStory(story: Story) {
         storyTitleTextView.text = story.title
         storyAuthorTextView.text = "Author: ${story.author}"
@@ -90,10 +107,12 @@ class StoryFragment : Fragment(), TextToSpeech.OnInitListener {
         storyMoralTextView.text = "Moral: ${story.moral}"
     }
 
+    // Function to speak the provided text
     private fun speakText(text: String) {
         textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, "StoryUtterance")
     }
 
+    // Callback method for TextToSpeech initialization
     override fun onInit(status: Int) {
         if (status == TextToSpeech.SUCCESS) {
             // Text-to-Speech engine is initialized successfully
@@ -117,14 +136,13 @@ class StoryFragment : Fragment(), TextToSpeech.OnInitListener {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        // Release resources when fragment is destroyed
-        textToSpeech.stop()
-        textToSpeech.shutdown()
-    }
-
+    // Function to show a toast message
     private fun showToast(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        textToSpeech.stop()
+        textToSpeech.shutdown()
     }
 }
