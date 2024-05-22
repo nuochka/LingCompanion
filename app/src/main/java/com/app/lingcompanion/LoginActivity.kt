@@ -115,8 +115,16 @@ class LoginActivity : AppCompatActivity() {
                         Toast.makeText(this, "Please verify your email address.", Toast.LENGTH_SHORT).show()
                     }
                 } else {
-                    Toast.makeText(this, login.exception?.message, Toast.LENGTH_SHORT).show()
+                    val errorMessage = login.exception?.message
+                    if (errorMessage == "The password is invalid or the user does not have a password.") {
+                        binding.etPassword.error = "Incorrect password"
+                    } else if (errorMessage == "There is no user record corresponding to this identifier. The user may have been deleted.") {
+                        binding.etEmail.error = "User does not exist"
+                    } else {
+                        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
     }
+
 }
