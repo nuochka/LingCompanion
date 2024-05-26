@@ -209,7 +209,7 @@ class ChatFragment : Fragment() {
         jsonObject.put("model", "gpt-3.5-turbo-instruct")
         jsonObject.put("prompt", query)
         jsonObject.put("temperature", 0)
-        jsonObject.put("max_tokens", 150)
+        jsonObject.put("max_tokens", 1000)
         jsonObject.put("top_p", 1)
         jsonObject.put("frequency_penalty", 0.0)
         jsonObject.put("presence_penalty", 0.0)
